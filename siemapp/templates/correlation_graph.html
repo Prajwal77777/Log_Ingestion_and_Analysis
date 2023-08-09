@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Correlation Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Correlation Analysis</h1>
+    <p>Correlation: {{ correlation }}</p>
+    <canvas id="correlationChart"></canvas>
+
+    <script>
+        var ctx = document.getElementById('correlationChart').getContext('2d');
+        var data = {
+            labels: [{% for log in logs %}"{{ log.EventTime }}",{% endfor %}],
+            datasets: [{
+                label: 'Severity Values',
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                data: [{% for log in logs %}{{ log.SeverityValue }},{% endfor %}],
+            }]
+        };
+
+        var options = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+
+        var correlationChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    </script>
+</body>
+</html>
